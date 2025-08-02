@@ -31,7 +31,7 @@ import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
     name: z.string().min(1, {
-        message: "server name is required"
+        message: "Server name is required"
     }),
 
     imageUrl: z.string().min(1, {
@@ -46,7 +46,7 @@ const formSchema = z.object({
 export const InitialModal =()=>{
 
     const [isMounted ,setIsMounted] = useState(false)   // to fix hydration error
-    const router = useRouter()
+//     const router = useRouter()
     useEffect(()=>{
         setIsMounted(true)
     },[])
@@ -59,12 +59,10 @@ export const InitialModal =()=>{
     })
 
     const isLoading = form.formState.isSubmitting
-    const onSubmit = async(values:z.infer<typeof formSchema>)=>{
-        await axios.post('/api/servers',values)
-        form.reset();
-        router.refresh();
-        window.location.reload()
 
+
+    const onSubmit = async(values:z.infer<typeof formSchema>)=>{
+        console.log(values);
     }
 
     if(!isMounted){
@@ -81,7 +79,6 @@ export const InitialModal =()=>{
                     <DialogTitle className='text-2xl text-center font-bold'>
                         Customize your server
                     </DialogTitle>
-
                     <DialogDescription className='text-center text-zinc-500'>
                         Give your server a personality with a name and image . You
                         can always change it later .
@@ -143,7 +140,7 @@ export const InitialModal =()=>{
 
                         </div>
 
-                        <DialogFooter className="bg-gray-500 px-6 py-4">
+                        <DialogFooter className="bg-gray-100 px-6 py-4">
                             <Button disabled={isLoading} variant="primary">
                                Create  
                             </Button>
