@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   // /* config options here */
   images:{
     domains:[
-      "uploadthing.com"
+     "utfs.io"
     ]
   }
 };
