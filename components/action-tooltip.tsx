@@ -7,7 +7,7 @@ import { Tooltip,
  } from "@/components/ui/tooltip"
 import { Children } from "react";
 
- interface ActionToolTipProps{
+interface ActionToolTipProps{
         label:string;
         children :React.ReactNode;
         side?: "top" | "right" | "bottom" | "left";
@@ -24,7 +24,7 @@ import { Children } from "react";
         return (
                 <TooltipProvider>
                         <Tooltip delayDuration={50} >
-                            <TooltipTrigger>
+                            <TooltipTrigger asChild >
                                 {children}
                             </TooltipTrigger>  
                             <TooltipContent side={side} align ={align} >

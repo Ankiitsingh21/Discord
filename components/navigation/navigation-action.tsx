@@ -1,11 +1,11 @@
 "use client"
 
 import { Plus } from "lucide-react"
-import { Button } from "../ui/button"
+// import { Button } from "../ui/button"
 import { ActionTooltip } from '../action-tooltip';
-import { useModal } from "@/hooks/use-model-store";
+// import { useModal } from "@/hooks/use-model-store";
 export const NavigationAction = () => {
-    const{onOpen} =useModal()
+    // const{onOpen} =useModal()
     return (
         <div>
 
@@ -14,10 +14,11 @@ export const NavigationAction = () => {
                 align='center'
                 label="Add a server"
             >
-                <button
+                {/* <button
                 onClick={()=>onOpen("createServer")}
                     className="group flex items-center"
-                >
+                > */}
+                <button className="group flex items-center" >
                     <div className="flex mx-3 h-[48px] w-[48px] rounded-[24px] 
                      group-hover:rounded-[16px] transition-all overflow-hidden
                      items-center justify-center bg-background dark:bg-neutral-700 
