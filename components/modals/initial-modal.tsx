@@ -8,7 +8,6 @@ import {
     DialogTitle
 } from '@/components/ui/dialog'
 
-
 import {
     Form,
     FormControl,
@@ -16,7 +15,6 @@ import {
     FormItem,
     FormLabel,
     FormMessage
-
 } from '@/components/ui/form'
 
 import * as z from "zod"
@@ -33,23 +31,19 @@ const formSchema = z.object({
     name: z.string().min(1, {
         message: "Server name is required"
     }),
-
     imageUrl: z.string().min(1, {
         message: 'server image is required'
     })
-
-
 })
 
-
-
-export const InitialModal =()=>{
-
-    const [isMounted ,setIsMounted] = useState(false)   // to fix hydration error
+export const InitialModal = () => {
+    const [isMounted, setIsMounted] = useState(false)   // to fix hydration error
     const router = useRouter()
-    useEffect(()=>{
+    
+    useEffect(() => {
         setIsMounted(true)
-    },[])
+    }, [])
+    
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -60,10 +54,9 @@ export const InitialModal =()=>{
 
     const isLoading = form.formState.isSubmitting
 
-
-    const onSubmit = async(values:z.infer<typeof formSchema>)=>{
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.post("/api/servers",values);
+            await axios.post("/api/servers", values);
             form.reset();
             router.refresh();
             window.location.reload();
@@ -72,60 +65,56 @@ export const InitialModal =()=>{
         }
     }
 
-    if(!isMounted){
+    if (!isMounted) {
         return null
     }
 
     return (
-
-       
         <Dialog open>
-            <DialogContent className='bg-white text-black p-0 overflow-hidden'>
-                {/* // This is header for dialog */}
+            <DialogContent className='p-0 overflow-hidden'>
+                {/* Header for dialog */}
                 <DialogHeader className='pt-8 px-6'>
-                    <DialogTitle className='text-2xl text-center font-bold'>
+                    <DialogTitle className='text-2xl text-center font-bold text-black dark:text-white'>
                         Customize your server
                     </DialogTitle>
-                    <DialogDescription className='text-center text-zinc-500'>
-                        Give your server a personality with a name and image . You
-                        can always change it later .
+                    <DialogDescription className='text-center text-zinc-500 dark:text-zinc-400'>
+                        Give your server a personality with a name and image. You
+                        can always change it later.
                     </DialogDescription>
                 </DialogHeader>
-
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}
                         className="space-y-8">
                         <div className="space-y-8 px-6">
 
-                            {/* Iteam for server image */}
+                            {/* Item for server image */}
                             <div className="flex items-center justify-center text-center">
                                 <FormField
-                                  control={form.control}
-                                  name="imageUrl"
-                                  render={({field}) =>(
-                                    <FormItem>
-                                        <FormControl>
-                                            <FileUpload
-                                                endpoint="serverImage"
-                                                value ={field.value}
-                                                onChange = {field.onChange}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                  )}
+                                    control={form.control}
+                                    name="imageUrl"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <FileUpload
+                                                    endpoint="serverImage"
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
                                 />
                             </div>
-                            
-                            {/* Form iteam for server name */}
+
+                            {/* Form item for server name */}
                             <FormField
                                 control={form.control}
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel
-                                         className="uppercase text-xs font-bold text-zinc-500
-                                         dark:text-secondary/70"
+                                            className="uppercase text-xs font-bold text-zinc-500 dark:text-zinc-400"
                                         >
                                             Server Name
                                         </FormLabel>
@@ -133,28 +122,26 @@ export const InitialModal =()=>{
                                         <FormControl>
                                             <Input
                                                 disabled={isLoading}
-                                                className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black
-                                                focus-visible:ring-offset-0
-                                                "
+                                                className="bg-zinc-300/50 dark:bg-zinc-700/50 border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
                                                 placeholder="Enter server name"
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage/>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
 
                         </div>
 
-                        <DialogFooter className="bg-gray-100 px-6 py-4">
+                        <DialogFooter className="bg-gray-100 dark:bg-[#2b2d31] px-6 py-4">
                             <Button disabled={isLoading} variant="primary">
-                               Create  
+                                Create
                             </Button>
                         </DialogFooter>
 
                     </form>
-                </Form> 
+                </Form>
             </DialogContent>
         </Dialog>
     )

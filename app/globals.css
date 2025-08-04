@@ -126,3 +126,11 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+/* Add this at the end of your globals.css file */
+[data-radix-dialog-content] {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+}

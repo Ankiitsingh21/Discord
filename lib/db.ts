@@ -1,6 +1,5 @@
 // import { PrismaClient } from "@prisma/client";
 import { PrismaClient } from "./generated/prisma";
-import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 
 declare global{
         var prisma: PrismaClient | undefined
