@@ -20,21 +20,19 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-    <html lang="en" suppressHydrationWarning >
-      <body className={ cn(font.className, "bg-white dark:bg-[#121212]")}>
-        <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        // forcedTheme="dark"
-        enableSystem={false}
-        storageKey="discord-theme"
-        >
-        {/* <ModalProvider/> */}
-        {/* <ModalProvider/> */}
-        {children}
-        </ThemeProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={cn(font.className, "bg-white dark:bg-[#121212]")}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            storageKey="discord-theme"
+          >
+            {/* <ModalProvider /> */}
+            {children}
+          </ThemeProvider>
         </body>
-    </html>
+      </html>
     </ClerkProvider>
   )
 }
