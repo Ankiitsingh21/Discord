@@ -27,7 +27,7 @@ export async function PATCH(
                 invitationCode:uuidv4()
             }
         })
-
+        // console.log(server.invitationCode);
         return NextResponse.json(server)
 
         
