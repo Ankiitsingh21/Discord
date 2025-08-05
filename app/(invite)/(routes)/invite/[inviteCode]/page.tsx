@@ -1,6 +1,5 @@
 import { currentProfile } from '@/lib/current-profile'
 import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 interface InviteCodePageProps{
     params:{
