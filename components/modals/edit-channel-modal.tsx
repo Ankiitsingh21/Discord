@@ -23,67 +23,65 @@ import {
 } from "@/components/ui/form";
 
 import {
-        Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-
 
 import qs from "query-string";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { ChannelType } from "@/lib/generated/prisma";
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Channel name is required",
-  }).refine(
-        name=>name!=="general",
-        {
-                message:"Channel name can not be 'general'"
-        }
-  ),
-  type: z.nativeEnum(ChannelType)
+  name: z
+    .string()
+    .min(1, {
+      message: "Channel name is required",
+    })
+    .refine((name) => name !== "general", {
+      message: "Channel name can not be 'general'",
+    }),
+  type: z.nativeEnum(ChannelType),
 });
 
 export const EDitChannelModal = () => {
-  const { isOpen, onClose, type ,data} = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
   const isModalOpen = isOpen && type === "editChannel";
-  const {channel,server } = data;
+  const { channel, server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channel?.type||ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
   });
 
-  useEffect(()=>{
-    if(channel){
-        form.setValue("name",channel.name);
-        form.setValue("type",channel.type);
+  useEffect(() => {
+    if (channel) {
+      form.setValue("name", channel.name);
+      form.setValue("type", channel.type);
     }
-  },[form , channel])
+  }, [form, channel]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-
-        const url = qs.stringifyUrl({
-                url:`/api/channels/${channel?.id}`,
-                query:{
-                        serverId:server?.id
-                }
-        });
+      const url = qs.stringifyUrl({
+        url: `/api/channels/${channel?.id}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
       await axios.patch(url, values);
       form.reset();
       router.refresh();
@@ -135,35 +133,35 @@ export const EDitChannelModal = () => {
                 )}
               />
               <FormField
-                control = {form.control}
+                control={form.control}
                 name="type"
-                render={({field})=>(
-                        <FormItem>
-                                  <FormLabel>
-                                        Channel Type
-                                  </FormLabel>
-                                  <Select disabled={isLoading} onValueChange={field.onChange} defaultValue={field.value} >
-                                        <FormControl>
-                                                <SelectTrigger className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none" >
-                                                <SelectValue placeholder="Select a channel type" >
-
-                                                </SelectValue>
-                                                </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                                {Object.values(ChannelType).map((type)=>(
-                                                      <SelectItem
-                                                         key={type}
-                                                         value={type}
-                                                         className="capitalize"
-                                                         >
-                                                                {type.toLocaleLowerCase()}
-                                                      </SelectItem>  
-                                                ))}
-                                        </SelectContent>
-                                  </Select>
-                                  <FormMessage/>
-                        </FormItem>
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Channel Type</FormLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
+                          <SelectValue placeholder="Select a channel type"></SelectValue>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(ChannelType).map((type) => (
+                          <SelectItem
+                            key={type}
+                            value={type}
+                            className="capitalize"
+                          >
+                            {type.toLocaleLowerCase()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
                 )}
               />
             </div>

@@ -5,7 +5,7 @@ import { db } from "./db";
 export const initialProfile = async () => {
   const user = await currentUser();
   if (!user) {
-    redirect("/sign-in");  // SERVER-SIDE REDIRECT
+    redirect("/sign-in"); // SERVER-SIDE REDIRECT
   }
 
   let profile = await db.profile.findUnique({
@@ -24,7 +24,7 @@ export const initialProfile = async () => {
       userId: user.id,
       name: `${user.firstName ?? ""} ${user.lastName ?? ""}`,
       imageUrl: user.imageUrl,
-      email: user.emailAddresses[0]?.emailAddress
+      email: user.emailAddresses[0]?.emailAddress,
     },
   });
 

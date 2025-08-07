@@ -81,7 +81,8 @@ export const CreateServerModal = () => {
             Customize your server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500 dark:text-zinc-400">
-            Give your server a personality with a name and image. You can always change it later.
+            Give your server a personality with a name and image. You can always
+            change it later.
           </DialogDescription>
         </DialogHeader>
 

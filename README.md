@@ -16,6 +16,7 @@ A full-stack Discord clone built with modern web technologies, featuring real-ti
 ## 🚀 Tech Stack
 
 ### **Frontend**
+
 - **[Next.js 15](https://nextjs.org/)** - React framework with App Router
 - **[React 19](https://react.dev/)** - Latest React with concurrent features
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
@@ -25,21 +26,25 @@ A full-stack Discord clone built with modern web technologies, featuring real-ti
 - **[Next Themes](https://github.com/pacocoursey/next-themes)** - Theme management
 
 ### **Backend & Database**
+
 - **[Prisma](https://www.prisma.io/)** - Next-generation ORM
 - **[PostgreSQL](https://www.postgresql.org/)** - Reliable relational database
 - **[Clerk](https://clerk.com/)** - Complete authentication solution
 
 ### **Form Management & Validation**
+
 - **[React Hook Form](https://react-hook-form.com/)** - Performant forms with minimal re-renders
 - **[Zod](https://zod.dev/)** - TypeScript-first schema validation
 - **[@hookform/resolvers](https://github.com/react-hook-form/resolvers)** - Validation resolvers
 
 ### **UI & Styling**
+
 - **[Radix UI](https://www.radix-ui.com/)** - Low-level UI primitives
 - **[Class Variance Authority](https://cva.style/docs)** - Component variant management
 - **[clsx](https://github.com/lukeed/clsx) & [tailwind-merge](https://github.com/dcastil/tailwind-merge)** - Conditional class utilities
 
 ### **Development Tools**
+
 - **[ESLint](https://eslint.org/)** - Code linting
 - **[PostCSS](https://postcss.org/)** - CSS processing
 - **[tw-animate-css](https://github.com/tailwindlabs/tailwindcss-animate)** - Animation utilities
@@ -55,7 +60,7 @@ erDiagram
     Profile ||--o{ Channel : creates
     Server ||--o{ Member : contains
     Server ||--o{ Channel : has
-    
+
     Profile {
         string id PK
         string userId UK "Clerk User ID"
@@ -65,7 +70,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     Server {
         string id PK
         string name
@@ -75,7 +80,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     Member {
         string id PK
         MemberRole role "ADMIN|MODERATOR|GUEST"
@@ -84,7 +89,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     Channel {
         string id PK
         string name
@@ -99,6 +104,7 @@ erDiagram
 ### **Database Relations**
 
 #### **Profile Model**
+
 ```prisma
 model Profile {
   id       String @id @default(uuid())
@@ -118,6 +124,7 @@ model Profile {
 ```
 
 #### **Server Model**
+
 ```prisma
 model Server {
   id         String @id @default(uuid())
@@ -141,6 +148,7 @@ model Server {
 ```
 
 #### **Member Model**
+
 ```prisma
 model Member {
   id   String     @id @default(uuid())
@@ -149,7 +157,7 @@ model Member {
   // Foreign Keys
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  
+
   serverId String
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
@@ -168,6 +176,7 @@ enum MemberRole {
 ```
 
 #### **Channel Model**
+
 ```prisma
 model Channel {
   id   String      @id @default(uuid())
@@ -177,7 +186,7 @@ model Channel {
   // Foreign Keys
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  
+
   serverId String
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
@@ -237,19 +246,22 @@ discord-clone/
 ## 🚦 Getting Started
 
 ### **Prerequisites**
-- Node.js 18+ 
+
+- Node.js 18+
 - PostgreSQL database
 - Clerk account for authentication
 
 ### **Installation**
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/discord-clone.git
    cd discord-clone
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -259,12 +271,13 @@ discord-clone/
    ```
 
 3. **Environment Setup**
-   
+
    Create a `.env` file in the root directory:
+
    ```env
    # Database
    DATABASE_URL="postgresql://username:password@localhost:5432/discord_clone"
-   
+
    # Clerk Authentication
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
    CLERK_SECRET_KEY=your_clerk_secret_key
@@ -275,18 +288,20 @@ discord-clone/
    ```
 
 4. **Database Setup**
+
    ```bash
    # Generate Prisma client
    npx prisma generate
-   
+
    # Push schema to database
    npx prisma db push
-   
+
    # (Optional) Open Prisma Studio
    npx prisma studio
    ```
 
 5. **Run the development server**
+
    ```bash
    npm run dev
    # or
@@ -332,38 +347,43 @@ discord-clone/
 ## 🎨 Theming System
 
 ### **Theme Configuration**
+
 - **Provider**: Next-themes for theme management
 - **Themes**: Light, Dark, and System preference
 - **CSS Variables**: Comprehensive color system
 - **Components**: All UI components support both themes
 
 ### **Color Scheme**
+
 ```css
 /* Light Theme */
---background: oklch(1 0 0);                    /* Pure white */
---foreground: oklch(0.147 0.004 49.25);        /* Dark text */
---primary: oklch(0.216 0.006 56.043);          /* Discord blue */
+--background: oklch(1 0 0); /* Pure white */
+--foreground: oklch(0.147 0.004 49.25); /* Dark text */
+--primary: oklch(0.216 0.006 56.043); /* Discord blue */
 
 /* Dark Theme */
---background: oklch(0.147 0.004 49.25);        /* Dark background */
---foreground: oklch(0.985 0.001 106.423);      /* Light text */
---primary: oklch(0.923 0.003 48.717);          /* Light accent */
+--background: oklch(0.147 0.004 49.25); /* Dark background */
+--foreground: oklch(0.985 0.001 106.423); /* Light text */
+--primary: oklch(0.923 0.003 48.717); /* Light accent */
 ```
 
 ## 🧩 Component Architecture
 
 ### **Form Components**
+
 - **React Hook Form**: Performance-optimized forms
 - **Zod Validation**: Type-safe schema validation
 - **Error Handling**: Accessible error messages
 - **Loading States**: Proper UX during submissions
 
 ### **Modal System**
+
 - **Radix Dialog**: Accessible modal primitives
 - **Custom Styling**: Discord-like appearance
 - **Form Integration**: Seamless form handling within modals
 
 ### **UI Components**
+
 - **Shadcn/ui**: Pre-built, customizable components
 - **Radix Primitives**: Accessible, unstyled components
 - **Tailwind Styling**: Utility-first styling approach
@@ -402,12 +422,14 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 ## 🚀 Deployment
 
 ### **Vercel (Recommended)**
+
 1. Push your code to GitHub
 2. Connect your repository to Vercel
 3. Add environment variables in Vercel dashboard
 4. Deploy automatically on every push to main branch
 
 ### **Other Platforms**
+
 - **Railway**: Great for database + app hosting
 - **PlanetScale**: Serverless MySQL database
 - **Supabase**: PostgreSQL with real-time features
@@ -448,4 +470,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by [Your Name]**
 
-*Star ⭐ this repository if you found it helpful!*
+_Star ⭐ this repository if you found it helpful!_

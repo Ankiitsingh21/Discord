@@ -1,53 +1,50 @@
-import {ServerSideBar} from "@/components/server/server-sidebar";
-import { currentProfile } from "@/lib/current-profile"
+import { ServerSideBar } from "@/components/server/server-sidebar";
+import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import React from "react"
+import React from "react";
 
-const ServerIdLayout=async({
-    children,
-    params
-}:{
-    children:React.ReactNode
-    params:{serverId:string};
+const ServerIdLayout = async ({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { serverId: string };
+}) => {
+  const profile = await currentProfile();
+  // const params = useParams();
+  if (!profile) {
+    return redirect("/sign-in");
+  }
 
-})=>{
-    const profile = await currentProfile();
-    // const params = useParams();
-    if(!profile){
-        return redirect("/sign-in");
-    }
+  const server = await db.server.findUnique({
+    where: {
+      id: params.serverId,
+      members: {
+        some: {
+          profileId: profile.id, // now only member of server can load that server
+        },
+      },
+    },
+  });
 
-    const server =await db.server.findUnique({
-        where:{
-            id:params.serverId,
-            members:{
-               some:{
-                profileId:profile.id // now only member of server can load that server
-               } 
-            }
-        }
-    });
+  if (!server) {
+    return redirect("/");
+  }
 
-    if(!server){
-        return redirect('/')
-    }
-
-
-    return(
-        <div className="h-full ">
-            <div className="invisible md:visible flex h-full w-60 z-20 
+  return (
+    <div className="h-full ">
+      <div
+        className="invisible md:visible flex h-full w-60 z-20 
             flex-col fixed inset-y-0
-            ">
-            <ServerSideBar serverId={params.serverId}/>
-            </div>
-            <main className="full md:pl-60">
-            {children}
-            </main>
-            
-        </div>
-    )
-}
+            "
+      >
+        <ServerSideBar serverId={params.serverId} />
+      </div>
+      <main className="full md:pl-60">{children}</main>
+    </div>
+  );
+};
 
-export default ServerIdLayout
+export default ServerIdLayout;

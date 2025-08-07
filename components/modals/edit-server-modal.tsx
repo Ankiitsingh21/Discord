@@ -40,11 +40,11 @@ const formSchema = z.object({
 });
 
 export const EditServerModal = () => {
-  const { isOpen, onClose, type ,data} = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
   const isModalOpen = isOpen && type === "editServer";
-  const {server} = data;
+  const { server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -54,12 +54,12 @@ export const EditServerModal = () => {
     },
   });
 
-  useEffect(()=>{
-    if(server){
-      form.setValue("name",server.name);
-      form.setValue("imageUrl",server.imageUrl)
+  useEffect(() => {
+    if (server) {
+      form.setValue("name", server.name);
+      form.setValue("imageUrl", server.imageUrl);
     }
-  },[server,form]);
+  }, [server, form]);
 
   const isLoading = form.formState.isSubmitting;
 
@@ -90,7 +90,8 @@ export const EditServerModal = () => {
             Customize your server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500 dark:text-zinc-400">
-            Give your server a personality with a name and image. You can always change it later.
+            Give your server a personality with a name and image. You can always
+            change it later.
           </DialogDescription>
         </DialogHeader>
 
