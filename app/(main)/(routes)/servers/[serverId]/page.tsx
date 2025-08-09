@@ -1,6 +1,7 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 interface ServerIdPageProps {
   params: {
@@ -11,7 +12,8 @@ interface ServerIdPageProps {
 const ServerIdPage = async ({ params }: ServerIdPageProps) => {
   const profile = await currentProfile();
   if (!profile) {
-    return redirect("/sign-in");
+    // return redirect("/sign-in");
+    return new NextResponse("profile does not exist",{status:401});
   }
 
   const server = await db.server.findUnique({
