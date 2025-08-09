@@ -13,7 +13,7 @@ const ServerIdPage = async ({ params }: ServerIdPageProps) => {
   const profile = await currentProfile();
   if (!profile) {
     // return redirect("/sign-in");
-    return new NextResponse("profile does not exist",{status:401});
+    return new NextResponse("profile does not exist", { status: 401 });
   }
 
   const server = await db.server.findUnique({

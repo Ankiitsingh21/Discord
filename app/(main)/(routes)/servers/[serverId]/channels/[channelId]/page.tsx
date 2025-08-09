@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatInput } from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
 
 interface ChannelIdPageProps {
   params: {
@@ -43,10 +44,20 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
         name={channel.name}
       />
 
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto">
-        Future messages
-      </div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        chatId={channel.id}
+        type="channel"
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
+        paramKey="channelId"
+        paramValue={channel.id}
+      />
 
       {/* Chat input fixed at bottom */}
       <div className="sticky bottom-0 bg-white dark:bg-[#313338]">
