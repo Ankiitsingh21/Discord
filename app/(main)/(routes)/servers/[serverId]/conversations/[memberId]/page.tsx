@@ -11,13 +11,13 @@ interface MemberIdPageProps {
   params: {
     memberId: string;
     serverId: string;
-  },
-  searchParams:{
-    video?:boolean
-  }
+  };
+  searchParams: {
+    video?: boolean;
+  };
 }
 
-const MemberIdPage = async ({ params,searchParams }: MemberIdPageProps) => {
+const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const profile = await currentProfile();
   if (!profile) {
     return redirect(`/sign-in`);
@@ -58,40 +58,36 @@ const MemberIdPage = async ({ params,searchParams }: MemberIdPageProps) => {
         serverId={params.serverId}
         type="conversation"
       />
-      {searchParams.video &&(
-        <MediaRoom
-           chatId={conversation.id}
-           video={true}
-           audio={true}
-        />
+      {searchParams.video && (
+        <MediaRoom chatId={conversation.id} video={true} audio={true} />
       )}
       {!searchParams.video && (
         <>
-               <ChatMessages
-             member={currentMember}
-             name={otherMember.profile.name}
-             chatId={conversation.id}
-             type="conversation"
-             apiUrl="/api/direct-messages"
-             paramKey="conversationId"
-             paramValue={conversation.id}
-             socketUrl="/api/socket/direct-messages"
-             socketQuery={{
-               conversationId: conversation.id,
-             }}
-           />
-     
-           {/* Sticky Input */}
-           <div className="sticky bottom-0 bg-white dark:bg-[#313338]">
-             <ChatInput
-               name={otherMember.profile.name}
-               type="conversation"
-               apiUrl="/api/socket/direct-messages"
-               query={{
-                 conversationId: conversation.id,
-               }}
-             />
-           </div>
+          <ChatMessages
+            member={currentMember}
+            name={otherMember.profile.name}
+            chatId={conversation.id}
+            type="conversation"
+            apiUrl="/api/direct-messages"
+            paramKey="conversationId"
+            paramValue={conversation.id}
+            socketUrl="/api/socket/direct-messages"
+            socketQuery={{
+              conversationId: conversation.id,
+            }}
+          />
+
+          {/* Sticky Input */}
+          <div className="sticky bottom-0 bg-white dark:bg-[#313338]">
+            <ChatInput
+              name={otherMember.profile.name}
+              type="conversation"
+              apiUrl="/api/socket/direct-messages"
+              query={{
+                conversationId: conversation.id,
+              }}
+            />
+          </div>
         </>
       )}
     </div>

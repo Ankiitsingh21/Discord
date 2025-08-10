@@ -4,7 +4,7 @@ import { Member, Message, Profile } from "@/lib/generated/prisma";
 import { ChatWelcome } from "./chat-welcome";
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader, Loader2, ServerCrash } from "lucide-react";
-import { Fragment,useRef ,ElementRef } from "react";
+import { Fragment, useRef, ElementRef } from "react";
 import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
 import { useChatSocket } from "@/hooks/use-chat-socket";
@@ -57,10 +57,12 @@ export const ChatMessages = ({
 
   useChatSocket({ queryKey, addKey, updateKey });
   useChatScroll({
-    chatRef,bottomRef,loadMore:fetchNextPage,
-    shouldLoadMore:!isFetchingNextPage && !!hasNextPage,
-    count:data?.pages?.[0].items?.length ?? 0
-  })
+    chatRef,
+    bottomRef,
+    loadMore: fetchNextPage,
+    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+    count: data?.pages?.[0].items?.length ?? 0,
+  });
   if (status === "pending") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
@@ -83,16 +85,20 @@ export const ChatMessages = ({
   }
   return (
     <div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
-      { !hasNextPage && <div className="flex-1" />}
-      {!hasNextPage &&(<ChatWelcome type={type} name={name} />)}
-      {hasNextPage &&(
-        <div className="flex justify-center" >
-            {isFetchingNextPage?(
-              <Loader className="h-6 w-6 text-zinc-500 animate-spin my-4" />
-            ):(
-            <button onClick={()=>fetchNextPage()} className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition" >
+      {!hasNextPage && <div className="flex-1" />}
+      {!hasNextPage && <ChatWelcome type={type} name={name} />}
+      {hasNextPage && (
+        <div className="flex justify-center">
+          {isFetchingNextPage ? (
+            <Loader className="h-6 w-6 text-zinc-500 animate-spin my-4" />
+          ) : (
+            <button
+              onClick={() => fetchNextPage()}
+              className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition"
+            >
               Load Previous message
-            </button>)}
+            </button>
+          )}
         </div>
       )}
       <div className="flex flex-col-reverse mt-auto">
