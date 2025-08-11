@@ -8,13 +8,15 @@ import { ChannelType } from "@/lib/generated/prisma";
 import { MediaRoom } from "@/components/media-room";
 
 interface ChannelIdPageProps {
-  params: {
+  params: Promise<{
     serverId: string;
     channelId: string;
-  };
+  }>;
 }
 
 const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
+  const { serverId, channelId } = await params; // ✅ Await because it's a Promise in Next.js 15
+
   const profile = await currentProfile();
   if (!profile) {
     return redirect(`/sign-in`);
@@ -22,13 +24,13 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
 
   const channel = await db.channel.findUnique({
     where: {
-      id: params.channelId,
+      id: channelId,
     },
   });
 
   const member = await db.member.findFirst({
     where: {
-      serverId: params.serverId,
+      serverId: serverId,
       profileId: profile.id,
     },
   });
