@@ -1,29 +1,25 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-
 interface InviteCodePageProps {
-  params: Promise<{
+  params: {
     inviteCode: string;
-  }>;
+  };
 }
 
 const InviteCodePage = async ({ params }: InviteCodePageProps) => {
-  const { inviteCode } = await params; // ✅ Await because it's a Promise in Next.js 15
-
   const profile = await currentProfile();
   if (!profile) {
     return redirect("/sign-in");
   }
 
-  if (!inviteCode) {
+  if (!params.inviteCode) {
     return redirect("/");
   }
 
-  // Check if user is already a member of the server
   const existingServer = await db.server.findFirst({
     where: {
-      invitationCode: inviteCode,
+      invitationCode: params.inviteCode,
       members: {
         some: {
           profileId: profile.id,
@@ -36,10 +32,9 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     return redirect(`/servers/${existingServer.id}`);
   }
 
-  // Add the user to the server
   const server = await db.server.update({
     where: {
-      invitationCode: inviteCode,
+      invitationCode: params.inviteCode,
     },
     data: {
       members: {
