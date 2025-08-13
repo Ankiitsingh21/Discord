@@ -22,34 +22,38 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstace = new (ClientIO as any)(
-      process.env.NEXT_PUBLIC_API_URL!,
-      {
-        path: "/api/socket/io",
-        addTrailingSlash: false,
-      },
-    );
+    // Get the correct URL for different environments
+    const serverURL = process.env.NEXT_PUBLIC_API_URL || 
+                      (typeof window !== 'undefined' ? window.location.origin : '');
+    
+    const socketInstance = new (ClientIO as any)(serverURL, {
+      path: "/api/socket/io",
+      addTrailingSlash: false,
+      transports: ["websocket", "polling"], // Ensure compatibility
+      upgrade: true,
+      rememberUpgrade: true,
+    });
 
-    socketInstace.on("connect", () => {
+    socketInstance.on("connect", () => {
       console.log("Socket connected");
       setIsConnected(true);
     });
 
-    socketInstace.on("disconnect", () => {
+    socketInstance.on("disconnect", () => {
       console.log("Socket disconnected");
       setIsConnected(false);
     });
 
-    socketInstace.on("connect_error", async (err: any) => {
-      console.log("Socket error", err);
-      //await fetch("/api/socket/io");
+    socketInstance.on("connect_error", async (err: any) => {
+      console.log("Socket connection error:", err);
+      setIsConnected(false);
     });
 
-    setSocket(socketInstace);
+    setSocket(socketInstance);
 
     return () => {
       console.log("Socket disconnecting....");
-      socketInstace.disconnect();
+      socketInstance.disconnect();
     };
   }, []);
 
